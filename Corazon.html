@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Te Amo Mi Bebe - Versión Mejorada</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Montserrat:wght@300;400;700&display=swap');
+
+        :root {
+            --heart-color: #ff2e63;
+            --heart-shadow: rgba(255, 46, 99, 0.7);
+            --bg-color-1: #1a1a2e;
+            --bg-color-2: #16213e;
+            --bg-color-3: #0f3460;
+            --text-color: #ffffff;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: linear-gradient(45deg, var(--bg-color-1), var(--bg-color-2), var(--bg-color-3));
+            font-family: 'Montserrat', sans-serif;
+            overflow: hidden;
+            color: var(--text-color);
+            perspective: 1000px;
+            opacity: 0;
+            animation: fadeIn 1s ease-in forwards;
+        }
+
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+            }
+        }
+
+        .container {
+            text-align: center;
+            position: relative;
+            z-index: 10;
+        }
+
+        .corazon-container {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 0 auto 60px;
+            cursor: pointer;
+        }
+
+        .corazon {
+            position: relative;
+            width: 200px;
+            height: 200px;
+            margin: 0 auto;
+            transform-origin: center;
+            animation: latido 1.5s ease infinite;
+            filter: drop-shadow(0 0 15px var(--heart-shadow));
+        }
+
+        .corazon:before, .corazon:after {
+            content: "";
+            position: absolute;
+            width: 100px;
+            height: 160px;
+            background: var(--heart-color);
+            border-radius: 100px 100px 0 0;
+        }
+
+        .corazon:before {
+            left: 0;
+            transform: rotate(-45deg);
+            transform-origin: 100% 100%;
+        }
+
+        .corazon:after {
+            left: 100px;
+            transform: rotate(45deg);
+            transform-origin: 0 100%;
+        }
+
+        h1 {
+            font-size: 3rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 10px var(--heart-shadow);
+            font-family: 'Dancing Script', cursive;
+            opacity: 0;
+            animation: fadeIn 2s forwards 0.5s;
+        }
+
+        .message {
+            font-size: 1.5rem;
+            margin-top: 30px;
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+            opacity: 0;
+            animation: fadeIn 2s forwards 1s;
+        }
+
+        .stars {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .star {
+            position: absolute;
+            background-color: white;
+            border-radius: 50%;
+            animation: twinkle 2s infinite;
+        }
+
+        @keyframes twinkle {
+            0%, 100% {
+                opacity: 1;
+            }
+            50% {
+                opacity: 0.5;
+            }
+        }
+
+        .particles {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            pointer-events: none;
+        }
+
+        .particle {
+            position: absolute;
+            background-color: rgba(255, 46, 99, 0.5);
+            border-radius: 50%;
+            animation: moveParticle 10s linear infinite;
+        }
+
+        @keyframes moveParticle {
+            0% {
+                transform: translate(0, 0);
+            }
+            100% {
+                transform: translate(var(--moveX), var(--moveY));
+            }
+        }
+
+        .controls {
+            position: fixed;
+            bottom: 20px;
+            left: 20px;
+            z-index: 100;
+            display: flex;
+            gap: 10px;
+        }
+
+        .btn {
+            background: rgba(255, 255, 255, 0.2);
+            border: none;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+
+        .audio-player {
+            position: fixed;
+            bottom: 70px;
+            left: 20px;
+            z-index: 100;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 30px;
+            padding: 10px 15px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+        }
+
+        .audio-player.visible {
+            opacity: 0.8;
+            transform: translateY(0);
+        }
+
+        .play-btn {
+            background: none;
+            border: none;
+            color: white;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        @keyframes latido {
+            0% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1);
+            }
+            100% {
+                transform: scale(1);
+            }
+        }
+
+        @media (max-width: 768px) {
+            h1 {
+                font-size: 2.2rem;
+            }
+
+            .corazon {
+                width: 150px;
+                height: 150px;
+            }
+
+            .corazon:before, .corazon:after {
+                width: 75px;
+                height: 120px;
+            }
+
+            .corazon:after {
+                left: 75px;
+            }
+
+            .message {
+                font-size: 1.2rem;
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.8rem;
+            }
+
+            .corazon {
+                width: 120px;
+                height: 120px;
+            }
+
+            .corazon:before, .corazon:after {
+                width: 60px;
+                height: 96px;
+            }
+
+            .corazon:after {
+                left: 60px;
+            }
+
+            .message {
+                font-size: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="corazon-container">
+            <div class="corazon"></div>
+        </div>
+        <h1>Te Amo Mucho Mi Bebe</h1>
+        <div class="message">Mi amor por ti es infinito ❤️</div>
+    </div>
+
+    <div class="particles" id="particles"></div>
+    <div class="stars" id="stars"></div>
+
+    <div class="controls">
+        <button class="btn" id="btn-music">Música</button>
+        <button class="btn" id="btn-colors">Colores</button>
+    </div>
+
+    <div class="audio-player" id="audio-player">
+        <button class="play-btn" id="play-btn">▶</button>
+        <div class="track-info">Música Romántica</div>
+        <audio id="bg-music" loop>
+            <source src="Miamor/Music.mp3" type="audio/mpeg">
+        </audio>
+    </div>
+
+    <script>
+        // Variables globales
+        const colors = [
+            { heart: '#ff2e63', shadow: 'rgba(255, 46, 99, 0.7)' },
+            { heart: '#ff9a3c', shadow: 'rgba(255, 154, 60, 0.7)' },
+            { heart: '#6a4c93', shadow: 'rgba(106, 76, 147, 0.7)' },
+            { heart: '#00b8a9', shadow: 'rgba(0, 184, 169, 0.7)' },
+            { heart: '#f25287', shadow: 'rgba(242, 82, 135, 0.7)' }
+        ];
+        const messages = [
+            "Mi amor por ti es infinito ❤️",
+            "Eres mi razón de vivir ❤️",
+            "Te amaré por siempre ❤️",
+            "Contigo todo es perfecto ❤️",
+            "Eres mi mayor tesoro ❤️"
+        ];
+        let currentColorIndex = 0;
+        let isMusicPlaying = false;
+
+        // Elementos del DOM
+        const corazon = document.querySelector('.corazon');
+        const message = document.querySelector('.message');
+        const particles = document.getElementById('particles');
+        const stars = document.getElementById('stars');
+        const audioPlayer = document.getElementById('audio-player');
+        const bgMusic = document.getElementById('bg-music');
+        const playBtn = document.getElementById('play-btn');
+        const btnColors = document.getElementById('btn-colors');
+
+        // Inicialización
+        document.addEventListener('DOMContentLoaded', () => {
+            createStars();
+            createParticles();
+            setupEventListeners();
+            autoChangeColors();
+            changeMessage();
+        });
+
+        // Crear estrellas
+        function createStars() {
+            for (let i = 0; i < 200; i++) {
+                const star = document.createElement('div');
+                star.className = 'star';
+                star.style.left = Math.random() * 100 + '%';
+                star.style.top = Math.random() * 100 + '%';
+                star.style.width = Math.random() * 2 + 1 + 'px';
+                star.style.height = star.style.width;
+                star.style.opacity = Math.random();
+                stars.appendChild(star);
+            }
+        }
+
+        // Crear partículas
+        function createParticles() {
+            for (let i = 0; i < 50; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.top = Math.random() * 100 + '%';
+                particle.style.width = Math.random() * 6 + 2 + 'px';
+                particle.style.height = particle.style.width;
+                particle.style.opacity = Math.random() * 0.6 + 0.2;
+                particle.style.setProperty('--moveX', (Math.random() - 0.5) * 200 + 'px');
+                particle.style.setProperty('--moveY', (Math.random() - 0.5) * 200 + 'px');
+                particles.appendChild(particle);
+            }
+        }
+
+        // Configurar eventos
+        function setupEventListeners() {
+            btnColors.addEventListener('click', changeHeartColor);
+            playBtn.addEventListener('click', toggleMusic);
+        }
+
+        // Cambiar color del corazón
+        function changeHeartColor() {
+            currentColorIndex = (currentColorIndex + 1) % colors.length;
+            const color = colors[currentColorIndex];
+            document.documentElement.style.setProperty('--heart-color', color.heart);
+            document.documentElement.style.setProperty('--heart-shadow', color.shadow);
+        }
+
+        // Cambiar colores automáticamente
+        function autoChangeColors() {
+            setInterval(changeHeartColor, 5000);
+        }
+
+        // Cambiar mensaje automáticamente
+        function changeMessage() {
+            let currentMessageIndex = 0;
+            setInterval(() => {
+                message.style.opacity = '0';
+                setTimeout(() => {
+                    message.textContent = messages[currentMessageIndex];
+                    message.style.opacity = '1';
+                    currentMessageIndex = (currentMessageIndex + 1) % messages.length;
+                }, 500);
+            }, 8000);
+        }
+
+        // Reproducir/pausar música
+        function toggleMusic() {
+            isMusicPlaying = !isMusicPlaying;
+            if (isMusicPlaying) {
+                bgMusic.play();
+                playBtn.textContent = '⏸';
+                audioPlayer.classList.add('visible');
+            } else {
+                bgMusic.pause();
+                playBtn.textContent = '▶';
+                audioPlayer.classList.remove('visible');
+            }
+        }
+    </script>
+</body>
+</html>
